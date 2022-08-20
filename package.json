@@ -1,0 +1,18 @@
+{
+  "name": "dc-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node main.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dc-management-sdk-js": "^1.17.1",
+    "prompt-sync": "^4.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
