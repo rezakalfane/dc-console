@@ -1,4 +1,8 @@
+[![Amplience Dynamic Content](media/header.png)](https://amplience.com/dynamic-content)
+
 # Amplience Dynamic Content Console
+
+![Amplience Dynamic Content Console](media/dc-console.png)
 
 Amplience Dynamic Content Console allows you to navigate your Amplience instance very easily from the command line. 
 
@@ -41,3 +45,8 @@ It's also possible to show hub settings, list extensions, webhooks, schemas, typ
 - quit - exit
 - bye - exit
 ```
+### Videos
+
+<video src='media/dc-console-1.mov' width=800 />
+
+<video src='media/dc-console-2.mov' width=800 />
