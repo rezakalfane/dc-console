@@ -48,4 +48,5 @@ It's also possible to show hub settings, list extensions, webhooks, schemas, typ
 ### Videos
 
 [Amplience Dynamic Content Console - Video 1](media/dc-console-1.mov)
+
 [Amplience Dynamic Content Console - Video 2](media/dc-console-2.mov)
