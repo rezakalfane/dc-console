@@ -2,10 +2,11 @@ import { DynamicContent, Folder, Hub, ContentItem, Extension, FacetQuery, Status
 import * as dotenv from 'dotenv';
 var pjson = require('./package.json');
 const prompt = require('prompt-sync')({ sigint: true })
-let client: DynamicContent
 
+// Load config from .env file
 dotenv.config();
 
+// Terminal colors
 const Reset = "\x1b[0m"
 const Bright = "\x1b[1m"
 const Dim = "\x1b[2m"
@@ -13,7 +14,6 @@ const Underscore = "\x1b[4m"
 const Blink = "\x1b[5m"
 const Reverse = "\x1b[7m"
 const Hidden = "\x1b[8m"
-
 const FgBlack = "\x1b[30m"
 const FgRed = "\x1b[31m"
 const FgGreen = "\x1b[32m"
@@ -22,7 +22,6 @@ const FgBlue = "\x1b[34m"
 const FgMagenta = "\x1b[35m"
 const FgCyan = "\x1b[36m"
 const FgWhite = "\x1b[37m"
-
 const BgBlack = "\x1b[40m"
 const BgRed = "\x1b[41m"
 const BgGreen = "\x1b[42m"
@@ -32,10 +31,14 @@ const BgMagenta = "\x1b[45m"
 const BgCyan = "\x1b[46m"
 const BgWhite = "\x1b[47m"
 
+let client: DynamicContent
+let quit = false
+
 interface Command {
     (args: any[]): Promise<void>
 }
 
+// Paginate results from management sdk
 const paginator = async <T extends HalResource>(
     pagableFn: (options?: Pageable & Sortable) => Promise<Page<T>>,
     options: Pageable & Sortable = {}
@@ -58,6 +61,7 @@ const paginator = async <T extends HalResource>(
 let result: any
 let results: any[]
 
+// global context
 const context: any = {
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -65,6 +69,11 @@ const context: any = {
     repoId: process.env.REPO_ID
 }
 
+/**
+ * Connect to Amplience Dynamic Content instance
+ * 
+ * @param args client id, client secret, hub id
+ */
 const connect: Command = async (
     args: string[]
 ) => {
@@ -78,20 +87,34 @@ const connect: Command = async (
     }
 }
 
+/**
+ * Display Amplience Client details
+ */
 const showClient: Command = async () => {
     console.log(client)
 }
 
+/**
+ * Show context information
+ */
 const showContext: Command = async () => {
     console.log(context)
 }
 
+/**
+ * Evaluate a javascript expression, access to context, client, result, results
+ * 
+ * @param args Expression
+ */
 const evalExpression: Command = async (args: string[]) => {
     const expression = args.join(' ')
     const evalResult = eval(expression)
     console.log(evalResult)
 }
 
+/**
+ * List all hubs
+ */
 const listHubs: Command = async () => {
     const hubs: Hub[] = await paginator(client.hubs.list)
     hubs.forEach((hub: Hub) => {
@@ -100,28 +123,37 @@ const listHubs: Command = async () => {
     results = hubs
 }
 
+/**
+ * Get a hub by id, name or beginning of name
+ * 
+ * @param args id, name or beginning of name
+ */
 const getHub: Command = async (args: string[]) => {
-    if (args.length == 0) return
-    let hub: Hub
-    const hubs: Hub[] = await paginator(client.hubs.list)
-    let filterHubs: Hub[] = hubs.filter(item => item.name == args[0])
-    if (filterHubs.length == 0) {
-        filterHubs = hubs.filter(item => item.name?.startsWith(args[0]))
-    }
-    if (filterHubs.length>0) {
-        hub = filterHubs[0]
-    } else {
-        hub = await client.hubs.get(args[0])
-    }
-    if (hub) {
-        result = hub
-        context.hub = hub
-        delete context.repo
-        delete context.folder
-        console.log(`${FgGreen}${hub.label}${Reset} : ${FgGreen}${hub.name}${Reset} : ${Dim}${hub.id}${Reset}`)
+    if (args.length > 0) {
+        let hub: Hub
+        const hubs: Hub[] = await paginator(client.hubs.list)
+        let filterHubs: Hub[] = hubs.filter(item => item.name == args[0])
+        if (filterHubs.length == 0) {
+            filterHubs = hubs.filter(item => item.name?.startsWith(args[0]))
+        }
+        if (filterHubs.length>0) {
+            hub = filterHubs[0]
+        } else {
+            hub = await client.hubs.get(args[0])
+        }
+        if (hub) {
+            result = hub
+            context.hub = hub
+            delete context.repo
+            delete context.folder
+            console.log(`${FgGreen}${hub.label}${Reset} : ${FgGreen}${hub.name}${Reset} : ${Dim}${hub.id}${Reset}`)
+        }
     }
 }
 
+/**
+ * Get hub settings
+ */
 const getHubSettings: Command = async () => {
     if (context.hub) {
         const settings = context.hub.settings
@@ -131,6 +163,9 @@ const getHubSettings: Command = async () => {
     }
 }
 
+/**
+ * Get a list of all schemas
+ */
 const getSchemas: Command = async () => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
@@ -142,6 +177,11 @@ const getSchemas: Command = async () => {
     }
 }
 
+/**
+ * Get a schema by schema id
+ * 
+ * @param args schema id
+ */
 const getSchema: Command = async (args: string[]) => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
@@ -159,6 +199,9 @@ const getSchema: Command = async (args: string[]) => {
     }
 }
 
+/**
+ * Get all content types
+ */
 const getTypes: Command = async () => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
@@ -170,6 +213,11 @@ const getTypes: Command = async () => {
     }
 }
 
+/**
+ * Get a type by id
+ * 
+ * @param args type id
+ */
 const getType: Command = async (args: string[]) => {
     if (context.hub && args.length>0) {
         const currentHub: Hub = context.hub 
@@ -179,6 +227,9 @@ const getType: Command = async (args: string[]) => {
     }
 }
 
+/**
+ * Get all repositories
+ */
 const getRepositories: Command = async () => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
@@ -192,13 +243,16 @@ const getRepositories: Command = async () => {
     }
 }
 
+/**
+ * Get a repository by id, name or beginning of a name
+ * 
+ * @param args
+ */
 const getRepository: Command = async (args: string[]) => {
     if (args.length == 0) {
         delete context.repo
         delete context.folder
-        return
-    }
-    if (context.hub) {
+    } else if (context.hub) {
         const currentHub: Hub = context.hub 
         const repos: ContentRepository[] = await paginator(currentHub.related.contentRepositories.list)
         let filterRepos: ContentRepository[] = repos.filter((repo: ContentRepository) => repo.id == args[0])
@@ -218,6 +272,9 @@ const getRepository: Command = async (args: string[]) => {
     }
 }
 
+/**
+ * Get folders in a repo or current folder
+ */
 const getFolders: Command = async () => {
     if (context.repo) {
         let folders: Folder[]
@@ -236,6 +293,11 @@ const getFolders: Command = async () => {
     }
 }
 
+/**
+ * Get folder in a repo or folder, or go up to the parent folder
+ * 
+ * @param args folder name, empty or '..'
+ */
 const getFolder: Command = async (args: string[]) => {
     if (context.repo) {
         let folders: Folder[]
@@ -276,7 +338,10 @@ const getFolder: Command = async (args: string[]) => {
     }
 }
 
-const getItems: Command = async (args: string[]) => {
+/**
+ * Get content items in repo or current folder
+ */
+const getItems: Command = async () => {
     if (context.folder) {
         const currentFolder: Folder = context.folder
         const items = await paginator(currentFolder.related.contentItems.list)
@@ -296,11 +361,20 @@ const getItems: Command = async (args: string[]) => {
     }
 }
 
-const listContent: Command = async (args: string[]) => {
+/**
+ * Get folders and items in the current repo or folder
+ * @param args 
+ */
+const listContent: Command = async () => {
     await getFolders([])
     await getItems([])
 }
 
+/**
+ * Get a content item by id
+ * 
+ * @param args contentId
+ */
 const getItemById: Command = async (args: string[]) => {
     if (client && args.length>0) {
         const item: ContentItem = await client.contentItems.get(args[0])
@@ -313,6 +387,9 @@ const getItemById: Command = async (args: string[]) => {
     }
 }
 
+/**
+ * Get all extensions
+ */
 const getExtensions: Command = async() => {
     if (context.hub) {
         const currentHub: Hub = context.hub
@@ -324,6 +401,11 @@ const getExtensions: Command = async() => {
     }
 }
 
+/**
+ * Get an extension by name
+ * 
+ * @param args extension name
+ */
 const getExtension: Command = async(args: string[]) => {
     if (context.hub && args.length>0) {
         const currentHub: Hub = context.hub
@@ -338,6 +420,9 @@ const getExtension: Command = async(args: string[]) => {
     }
 }
 
+/**
+ * Get all webhooks
+ */
 const getWebhooks: Command = async() => {
     if (context.hub) {
         const currentHub: Hub = context.hub
@@ -349,6 +434,11 @@ const getWebhooks: Command = async() => {
     }
 }
 
+/**
+ * Get a webhook by id
+ * 
+ * @param args webhook id
+ */
 const getWebhook: Command = async(args: string[]) => {
     if (context.hub && args.length>0) {
         const currentHub: Hub = context.hub
@@ -362,6 +452,14 @@ const getWebhook: Command = async(args: string[]) => {
     }
 }
 
+/**
+ * Exit command
+ */
+const exit: Command = async () => {
+    quit = true
+}
+
+// all commands mapping and aliases
 const commandsMapping: any = {
     'conn': connect,
     'connect': connect,
@@ -387,17 +485,24 @@ const commandsMapping: any = {
     'extensions': getExtensions,
     'extension': getExtension,
     'webhooks': getWebhooks,
-    'webhook': getWebhook
+    'webhook': getWebhook,
+    'exit': exit,
+    'quit': exit,
+    'bye': exit
 }
 
+// main console loop
 const runConsole = async () => {
     console.log(`Dynamic Content Console v${pjson.version}`)
+
+    // connect to Amplience Dynamic Content instance
     await(connect([context.clientId,context.clientSecret,context.hubId]))
     if (context.repoId) { 
         await getRepository([context.repoId])
     }
-    let quit = false
     while (!quit) {
+
+        // building prompt
         let promptString = ''
         if (context.hub) {
             promptString += FgGreen + context.hub.name + Reset
@@ -405,6 +510,8 @@ const runConsole = async () => {
         if (context.repo) {
             promptString += ' > ' + FgRed + context.repo.name + Reset
         }
+
+        // traversing all folder parents
         let folderPrompt = ''
         if (context.folder) {
             const currentFolder = context.folder
@@ -419,6 +526,8 @@ const runConsole = async () => {
         }
         promptString += folderPrompt
         const input: string = prompt(promptString + ' > ')
+
+        // getting tokens and executing command
         const tokens: string[] = input.split(' ')
         if (tokens.length > 0) {
             const userCommand = tokens[0]
@@ -430,9 +539,6 @@ const runConsole = async () => {
                     console.error(error.message)
                 }
             }
-        }
-        if (input === 'exit' || input === 'quit') {
-            quit = true
         }
     }
 }
