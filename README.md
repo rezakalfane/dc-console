@@ -13,7 +13,8 @@ It's also possible to show hub settings, list extensions, webhooks, schemas, typ
 - conn - alias for connect
 - context - show current context
 - client - show client details
-- eval - evaluate a javascript expression, you can access objects like client, context, result, results
+- eval - evaluate a javascript expression, you can access objects like client, context, result, 
+    results
 - hubs - list all hubs, save array in results
 - hub [hub id, name or label] - select a hub, save hub in result
 - settings - show hub settings, save settings in result
@@ -24,9 +25,11 @@ It's also possible to show hub settings, list extensions, webhooks, schemas, typ
 - repos - get all repositories, save array in results
 - repo [repo id or name] - select a repository, save repository in result
 - folders - get all folders in the current repo or folder, save array in results
-- folder ['' | folder id or name | '..]-  select a folder, reset folder is no parameter or go up to the parent folder using '..', save folder in result
+- folder ['' | folder id or name | '..]-  select a folder, reset folder is no parameter or go 
+    up to the parent folder using '..', save folder in result
 - cd - alias for folder
-- ls - do both list folders and list content items in the current repo or folder, only save items in results
+- ls - do both list folders and list content items in the current repo or folder, only save 
+    items in results
 - items - get all content items in the current repo or folder, save arry in results
 - item id - get content item by id, save item in result
 - cat - alias for item
