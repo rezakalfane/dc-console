@@ -127,7 +127,7 @@ const getHubSettings: Command = async () => {
         const settings = context.hub.settings
         result = settings
         context.settings = settings
-        console.log(`vse: ${settings.virtualStagingEnvironment.hostname}`)
+        console.log(JSON.stringify(settings,null,4))
     }
 }
 
@@ -154,7 +154,7 @@ const getSchema: Command = async (args: string[]) => {
             delete itemAny._links
             delete itemAny.related
             delete itemAny.client
-            console.log(itemAny)
+            console.log(JSON.stringify(itemAny,null,4))
         }
     }
 }
@@ -165,8 +165,17 @@ const getTypes: Command = async () => {
         const types: ContentType[] = await paginator(currentHub.related.contentTypes.list)
         types
             .filter((item: ContentType) => item.status == Status.ACTIVE)
-            .forEach((item: ContentType) => { console.log(`${FgBlue}${item.settings?.label}${Reset} : ${FgCyan}${item.contentTypeUri}${Reset}`) })
+            .forEach((item: ContentType) => { console.log(`${FgBlue}${item.settings?.label}${Reset} : ${FgCyan}${item.contentTypeUri}${Reset} : ${Dim}${item.id}${Reset}`) })
         results = types
+    }
+}
+
+const getType: Command = async (args: string[]) => {
+    if (context.hub && args.length>0) {
+        const currentHub: Hub = context.hub 
+        const type: ContentType = await currentHub.related.contentTypes.get(args[0])
+        console.log(JSON.stringify(type,null,4))
+        result = type
     }
 }
 
@@ -300,7 +309,7 @@ const getItemById: Command = async (args: string[]) => {
         delete itemAny._links
         delete itemAny.related
         delete itemAny.client
-        console.log(itemAny)
+        console.log(JSON.stringify(itemAny,null,4))
     }
 }
 
@@ -324,7 +333,7 @@ const getExtension: Command = async(args: string[]) => {
         delete extensionAsAny._links
         delete extensionAsAny.related
         delete extensionAsAny.client
-        console.log(extensionAsAny)
+        console.log(JSON.stringify(extensionAsAny,null,4))
         result = extension
     }
 }
@@ -348,7 +357,7 @@ const getWebhook: Command = async(args: string[]) => {
         delete webhookAsAny._links
         delete webhookAsAny.related
         delete webhookAsAny.client
-        console.log(webhookAsAny)
+        console.log(JSON.stringify(webhookAsAny,null,4))
         result = webhook
     }
 }
@@ -365,6 +374,7 @@ const commandsMapping: any = {
     'schemas': getSchemas,
     'schema': getSchema,
     'types': getTypes,
+    'type': getType,
     'repos': getRepositories,
     'repo': getRepository,
     'folders': getFolders,
