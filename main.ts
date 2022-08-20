@@ -1,7 +1,10 @@
 import { DynamicContent, Folder, Hub, ContentItem, Extension, FacetQuery, Status, ContentRepository, ContentTypeSchema, ContentType, HalResource, Page, Pageable, Settings, Sortable, Webhook } from 'dc-management-sdk-js'
+import * as dotenv from 'dotenv';
 var pjson = require('./package.json');
 const prompt = require('prompt-sync')({ sigint: true })
 let client: DynamicContent
+
+dotenv.config();
 
 const Reset = "\x1b[0m"
 const Bright = "\x1b[1m"
@@ -56,6 +59,10 @@ let result: any
 let results: any[]
 
 const context: any = {
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    hubId: process.env.HUB_ID,
+    repoId: process.env.REPO_ID
 }
 
 const connect: Command = async (
@@ -375,6 +382,10 @@ const commandsMapping: any = {
 
 const runConsole = async () => {
     console.log(`Dynamic Content Console v${pjson.version}`)
+    await(connect([context.clientId,context.clientSecret,context.hubId]))
+    if (context.repoId) { 
+        await getRepository([context.repoId])
+    }
     let quit = false
     while (!quit) {
         let promptString = ''
