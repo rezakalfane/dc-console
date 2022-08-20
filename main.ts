@@ -273,7 +273,7 @@ const getItems: Command = async (args: string[]) => {
         const items = await paginator(currentFolder.related.contentItems.list)
         items
             .filter((item: ContentItem) => item.status == Status.ACTIVE)
-            .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : <${item.body._meta?.deliveryKey}> : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
+            .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
         results = items
     } else {
         if (context.repo) {
