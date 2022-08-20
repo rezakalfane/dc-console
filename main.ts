@@ -56,10 +56,6 @@ let result: any
 let results: any[]
 
 const context: any = {
-    clientId: '27b98f7f-1386-4249-b612-0d09301ef0a2',
-    clientSecret: '0cad2823c9407f584fe582ce606dece6f90a41549f4cb23f6b9c21f85d1d3aaa',
-    hubId: '5ff628fdc9e77c0001da3f7c',
-    repoId: '5ff629064cedfd00013c2600'
 }
 
 const connect: Command = async (
@@ -379,10 +375,6 @@ const commandsMapping: any = {
 
 const runConsole = async () => {
     console.log(`Dynamic Content Console v${pjson.version}`)
-    await(connect([context.clientId,context.clientSecret,context.hubId]))
-    if (context.repoId) { 
-        await getRepository([context.repoId])
-    }
     let quit = false
     while (!quit) {
         let promptString = ''
