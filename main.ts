@@ -62,7 +62,7 @@ let result: any
 let results: any[]
 
 // global context
-const context: any = {
+let context: any = {
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     hubId: process.env.HUB_ID,
@@ -453,6 +453,31 @@ const getWebhook: Command = async(args: string[]) => {
 }
 
 /**
+ * Switch environment
+ * 
+ * @param args env name
+ */
+ const getEnv: Command = async (args: string[]) => {
+    if (args.length>0) {
+        delete process.env.CLIENT_ID
+        delete process.env.CLIENT_SECRET
+        delete process.env.HUB_ID
+        delete process.env.REPO_ID
+        dotenv.config({ path: `./.env.${args[0]}`})
+        context = {
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            hubId: process.env.HUB_ID,
+            repoId: process.env.REPO_ID
+        }
+        await(connect([context.clientId,context.clientSecret,context.hubId]))
+        if (context.repoId) { 
+            await getRepository([context.repoId])
+        }
+    }
+}
+
+/**
  * Exit command
  */
 const exit: Command = async () => {
@@ -488,7 +513,8 @@ const commandsMapping: any = {
     'webhook': getWebhook,
     'exit': exit,
     'quit': exit,
-    'bye': exit
+    'bye': exit,
+    'env': getEnv
 }
 
 // main console loop
