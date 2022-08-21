@@ -41,7 +41,22 @@ You can create multiple .env.<environment name> files locally (ignored by git), 
 
 You can use `result` and `results`:
 - in the `eval` command: `eval results.length`)
-- or in expressions: \``result.id`\`
+- or in expressions: getting last result id \``result.id`\`, or getting an array of ids `eval results.map(item=>({id: item.id}))`:
+
+```json
+> eval results.map(item=>({id: item.id}))
+
+[
+  { id: '5ff629064cedfd00013c2600' },
+  { id: '5ff6290bcff47e00014b2bad' },
+  { id: '5ff629b052faff00012cd4e4' },
+  { id: '5ff629d8cff47e0001f94cd2' },
+  { id: '5ff629fdc9e77c00016ac81b' },
+  { id: '5ff62a23cff47e000132f811' },
+  { id: '5ffd6eb64cedfd00013d8dec' },
+  { id: '60d1e7734cedfd0001187552' }
+]
+```
 
 ## Using variables
 
