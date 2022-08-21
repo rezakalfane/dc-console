@@ -10,6 +10,22 @@ You can select a hub, repo and go into folders and list content items.
 
 It's also possible to show hub settings, list extensions, webhooks, schemas, types as well.
 
+## Environment setup
+
+### .env file format
+
+Environemnt configuration is done in a local .env file (ignored by git):
+
+```
+CLIENT_ID=xxx
+CLIENT_SECRET=yyy
+HUB_ID=yyy (optional)
+```
+
+### Working with multiple environments
+
+You can create multiple .env.<environment name> files locally (ignored by git), and switch using the `env <environment name>` command.
+
 ## Supported commands
 
 ```
@@ -17,6 +33,7 @@ It's also possible to show hub settings, list extensions, webhooks, schemas, typ
 - conn - alias for connect
 - context - show current context
 - client - show client details
+- env - switch environment, configuration file in .env.<environment name>
 - eval - evaluate a javascript expression, you can access objects like client, context, result, 
     results
 - hubs - list all hubs, save array in results
