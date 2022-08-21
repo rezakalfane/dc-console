@@ -30,9 +30,25 @@ You can create multiple .env.<environment name> files locally (ignored by git), 
 
 ## Entering commands
 
+- first token is the command and the rest are the parameters
 - tokens with spaces can be surrounded by quotes: `"this is my token"`
 - expressions are surrounded with \`\` and can contain spaces: \``2 + 2`\`
 - variables are surrounded by double curly braces: `{{myVariable}}`
+
+Example execution:
+
+```
+> repos
+Content : content : 5ff629064cedfd00013c2600
+Slots : slots : 5ff6290bcff47e00014b2bad
+Content (fr-FR) : contentfr : 5ff629b052faff00012cd4e4
+Content (de-DE) : contentde : 5ff629d8cff47e0001f94cd2
+Content (es-ES) : contentes : 5ff629fdc9e77c00016ac81b
+Content (it-IT) : contentit : 5ff62a23cff47e000132f811
+Site Components : sitestructure : 5ffd6eb64cedfd00013d8dec
+Email Marketing : emailmarketing : 60d1e7734cedfd0001187552
+8 results
+```
 
 ## Last single result and array results
 
@@ -40,7 +56,7 @@ You can create multiple .env.<environment name> files locally (ignored by git), 
 - last list of results is stored in the `results` variable as an array (for instance a list of content items)
 
 You can use `result` and `results`:
-- in the `eval` command: `eval results.length`)
+- in the `eval` command: `eval results.length`
 - or in expressions: getting last result id \``result.id`\`, or getting an array of ids `eval results.map(item=>({id: item.id}))`:
 
 ```
