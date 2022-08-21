@@ -26,6 +26,35 @@ HUB_ID=yyy (optional)
 
 You can create multiple .env.<environment name> files locally (ignored by git), and switch using the `env <environment name>` command.
 
+## Entering commands
+
+- tokens with spaces can be surrounded by quotes: `"this is my token"`
+- expressions are surrounded with \`\` and can contain spaces: \``2 + 2`\`
+- variables are surrounded by double curly braces: `{{myVariable}}`
+
+## Last single result and array results
+
+- last single result is stored in the `result` variable (for instance one schema, type or item)
+- last list of results is stored in the `results` variable as an array (for instance a list of content items)
+
+You can use `result` and `results`:
+- in the `eval` command (`eval results.length`), 
+- or in expressions (\`result.id\`).
+
+## Using variables
+
+Variables are stored in the `context` in `context.variables`. You can use the `setvar` command to set a variable with a value. If you don't specify a value, the variable will be removed.
+
+The `variables` command will show all the variables stored in the context.
+
+Variables using the format `{{myVariable}}` are automatically expanded. For instance in the command `item {{mySavedId}}`.
+
+## Using expressions
+
+Expressions can be used anywhere in the user input. For instance `echo `\``context.variables.mySavedId`\`.
+
+Try \``"ech" + "o"`\` \``results[0].id`\` for fun!
+
 ## Supported commands
 
 ```
