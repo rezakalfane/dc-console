@@ -17,6 +17,7 @@ It's also possible to show hub settings, list extensions, webhooks, schemas, typ
 - conn - alias for connect
 - context - show current context
 - client - show client details
+- env - switch environment, configuration file in .env.<environment name>
 - eval - evaluate a javascript expression, you can access objects like client, context, result, 
     results
 - hubs - list all hubs, save array in results
