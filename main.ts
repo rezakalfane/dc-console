@@ -464,15 +464,17 @@ const getWebhook: Command = async(args: string[]) => {
         delete process.env.HUB_ID
         delete process.env.REPO_ID
         dotenv.config({ path: `./.env.${args[0]}`})
-        context = {
-            clientId: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            hubId: process.env.HUB_ID,
-            repoId: process.env.REPO_ID
-        }
-        await(connect([context.clientId,context.clientSecret,context.hubId]))
-        if (context.repoId) { 
-            await getRepository([context.repoId])
+        if (process.env.CLIENT_ID && process.env.CLIENT_SECRET) {
+            context = {
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                hubId: process.env.HUB_ID,
+                repoId: process.env.REPO_ID
+            }
+            await(connect([context.clientId,context.clientSecret,context.hubId]))
+            if (context.repoId) { 
+                await getRepository([context.repoId])
+            }
         }
     }
 }
