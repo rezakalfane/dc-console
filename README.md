@@ -43,9 +43,10 @@ You can use `result` and `results`:
 - in the `eval` command: `eval results.length`)
 - or in expressions: getting last result id \``result.id`\`, or getting an array of ids `eval results.map(item=>({id: item.id}))`:
 
-```json
+```
 > eval results.map(item=>({id: item.id}))
-
+```
+```json
 [
   { id: '5ff629064cedfd00013c2600' },
   { id: '5ff6290bcff47e00014b2bad' },
