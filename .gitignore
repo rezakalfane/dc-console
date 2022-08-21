@@ -1,4 +1,5 @@
 .env.local
 .env
 .env.*
+.DS_Store
 node_modules/
