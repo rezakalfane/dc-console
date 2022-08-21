@@ -459,11 +459,7 @@ const getWebhook: Command = async(args: string[]) => {
  */
  const getEnv: Command = async (args: string[]) => {
     if (args.length>0) {
-        delete process.env.CLIENT_ID
-        delete process.env.CLIENT_SECRET
-        delete process.env.HUB_ID
-        delete process.env.REPO_ID
-        dotenv.config({ path: `./.env.${args[0]}`})
+        dotenv.config({ path: `./.env.${args[0]}`, override: true})
         if (process.env.CLIENT_ID && process.env.CLIENT_SECRET) {
             context = {
                 clientId: process.env.CLIENT_ID,
