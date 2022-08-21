@@ -189,6 +189,11 @@ const evalExpression: Command = async (args: string[]) => {
     console.log(evalResult)
 }
 
+
+const showNumberOfResults = (results: any[]) => {
+    console.log(`${Dim}${results.length} result${results.length>1 ? 's' : ''}${Reset}`)
+}
+
 /**
  * List all hubs
  */
@@ -198,6 +203,7 @@ const listHubs: Command = async () => {
         console.log(`${FgGreen}${hub.label}${Reset} : ${FgGreen}${hub.name}${Reset} : ${Dim}${hub.id}${Reset}`)
     })
     results = hubs
+    showNumberOfResults(results)
 }
 
 /**
@@ -251,6 +257,7 @@ const getSchemas: Command = async () => {
         schemasFilter
             .forEach((item: ContentTypeSchema) => { console.log(`${FgCyan}${item.schemaId}${Reset}`) })
         results = schemasFilter
+        showNumberOfResults(results)
     }
 }
 
@@ -287,6 +294,7 @@ const getTypes: Command = async () => {
         typesFilter
             .forEach((item: ContentType) => { console.log(`${FgBlue}${item.settings?.label}${Reset} : ${FgCyan}${item.contentTypeUri}${Reset} : ${Dim}${item.id}${Reset}`) })
         results = typesFilter
+        showNumberOfResults(results)
     }
 }
 
@@ -317,6 +325,7 @@ const getRepositories: Command = async () => {
                 console.log(`${FgRed}${item.label}${Reset} : ${FgRed}${item.name}${Reset} : ${Dim}${item.id}${Reset}`)
             })
         results = reposFilter
+        showNumberOfResults(results)
     }
 }
 
@@ -367,6 +376,7 @@ const getFolders: Command = async () => {
                 console.log(`${FgYellow}${item.name}${Reset} : ${Dim}${item.id}${Reset}`)
             })
         results = folders
+        showNumberOfResults(results)
     }
 }
 
@@ -424,8 +434,9 @@ const getItems: Command = async () => {
         const items = await paginator(currentFolder.related.contentItems.list)
         const itemsFilter = items.filter((item: ContentItem) => item.status == Status.ACTIVE)
         itemsFilter
-            .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${item.status} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
+            .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
         results = itemsFilter
+        showNumberOfResults(results)
     } else {
         if (context.repo) {
             const currentRepo: ContentRepository = context.repo
@@ -434,6 +445,7 @@ const getItems: Command = async () => {
             itemsFilter
                 .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
             results = itemsFilter
+            showNumberOfResults(results)
         }
     }
 }
@@ -475,6 +487,7 @@ const getExtensions: Command = async() => {
             console.log(`${FgCyan}${extension.label}${Reset} : ${FgCyan}${extension.name}${Reset} : ${extension.category} : ${Dim}${extension.id}${Reset}`)
         })
         results = extensions
+        showNumberOfResults(results)
     }
 }
 
@@ -508,6 +521,7 @@ const getWebhooks: Command = async() => {
             console.log(`${FgCyan}${webhook.label}${Reset} : ${FgCyan}${webhook.active}${Reset} : ${Dim}${webhook.id}${Reset}`)
         })
         results = webhooks
+        showNumberOfResults(results)
     }
 }
 
