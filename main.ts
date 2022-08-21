@@ -38,7 +38,43 @@ interface Command {
     (args: any[]): Promise<void>
 }
 
-// Paginate results from management sdk
+/**
+ * Prepare all tokens, expand variables, evaluate expressions
+ * 
+ * @param tokens tokens from user prompt
+ * @returns prepared tokens
+ */
+const prepareTokens = (tokens: string[]) => {
+    return tokens.map((item: string) => {
+        item = item.replace(/\\s/g, ' ')
+        if (item.startsWith('{{') && item.endsWith('}}')) {
+            const variable = item.substring(2, item.length -2)
+            const storeVariable = context.variables[variable]
+            if (storeVariable) return storeVariable as string
+            else return item
+        } else if (item.startsWith("`") && item.endsWith("`")) {
+            const expression = item.substring(1, item.length - 1)
+            try {
+                return eval(expression) as string
+            } catch (error: any) {
+                return error.message
+            }
+            
+        } else if (item.startsWith('"') && item.endsWith('"')) {
+            return item.substring(1, item.length - 1)
+        } else {
+            return item
+        }
+    })
+}
+
+/**
+ * Paginate results from management sdk
+ * 
+ * @param pagableFn 
+ * @param options 
+ * @returns 
+ */
 const paginator = async <T extends HalResource>(
     pagableFn: (options?: Pageable & Sortable) => Promise<Page<T>>,
     options: Pageable & Sortable = {}
@@ -58,15 +94,25 @@ const paginator = async <T extends HalResource>(
     return currentPage.getItems()
 }
 
+/**
+ * Last single result
+ */
 let result: any
+
+/**
+ * Last array result (for instance, list of items)
+ */
 let results: any[]
 
-// global context
+/**
+ * Global context
+ */ 
 let context: any = {
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     hubId: process.env.HUB_ID,
-    repoId: process.env.REPO_ID
+    repoId: process.env.REPO_ID,
+    variables: {}
 }
 
 /**
@@ -99,6 +145,37 @@ const showClient: Command = async () => {
  */
 const showContext: Command = async () => {
     console.log(context)
+}
+
+/**
+ * Showing all variables
+ */
+const showVariables: Command = async () => {
+    console.log(context.variables)
+}
+
+/**
+ * Printing tokens after preparation (expanding variables, evaluating expressions)
+ * 
+ * @param args tokens
+ */
+const echo: Command = async (args: string[]) => {
+    if (args.length>0) console.log(args.join(' '))
+}
+
+/**
+ * Store a variablem or remove variable if value is empty
+ * 
+ * @param args variable name, variable value
+ */
+const setVariable: Command = async (args: string[]) => {
+    if (args.length>0) {
+        if (args.length == 1) {
+            delete context.variables[args[0]]
+        } else if (args.length == 2) {
+            context.variables[args[0]] = args[1]
+        }
+    }
 }
 
 /**
@@ -465,7 +542,8 @@ const getWebhook: Command = async(args: string[]) => {
                 clientId: process.env.CLIENT_ID,
                 clientSecret: process.env.CLIENT_SECRET,
                 hubId: process.env.HUB_ID,
-                repoId: process.env.REPO_ID
+                repoId: process.env.REPO_ID,
+                variables: {}
             }
             await(connect([context.clientId,context.clientSecret,context.hubId]))
             if (context.repoId) { 
@@ -512,7 +590,14 @@ const commandsMapping: any = {
     'exit': exit,
     'quit': exit,
     'bye': exit,
-    'env': getEnv
+    'env': getEnv,
+    'setvar': setVariable,
+    'set': setVariable,
+    'var': setVariable,
+    'vars': showVariables,
+    'variables': showVariables,
+    'echo': echo,
+    'print': echo
 }
 
 // main console loop
@@ -550,9 +635,12 @@ const runConsole = async () => {
         }
         promptString += folderPrompt
         const input: string = prompt(promptString + ' > ')
+            .replace(/\s+(?=(?:(?:[^`]*`){2})*[^`]*`[^`]*$)/g, "\\s") // replace all spaces within ``
+            .replace(/\s+(?=(?:(?:[^"]*"){2})*[^"]*"[^"]*$)/g, "\\s") // replace all spaces within ""
+            .replace(/\\ /g, "\\s")                                   // replace all "\ "
 
         // getting tokens and executing command
-        const tokens: string[] = input.split(' ')
+        const tokens: string[] = prepareTokens(input.split(' '))
         if (tokens.length > 0) {
             const userCommand = tokens[0]
             const command: any = commandsMapping[userCommand]
