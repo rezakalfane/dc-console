@@ -59,32 +59,32 @@ Try \``"ech" + "o"`\` \``results[0].id`\` for fun!
 
 | Commands | Description |
 |----------|-------------|
-| connect, conn clientId clientSecret [hubId] | connects to an Amplience Dynamic Content instance |
-context | show current context
-client | show client details
-env | switch environment, configuration file in .env.<environment name>
-variables | show all variables
-setvar, var, set varName [varValue] | set a variable or remove it if no value is specified
-eval | evaluate a javascript expression, you can access objects like client, context, result, results
-hubs | list all hubs, save array in results
-hub [hub id, name or label] | select a hub, save hub in result
-settings | show hub settings, save settings in result
-schemas | get all schemas, save array in results
-schema schemaId | get a schema, save schema in result
-types | get all content types, save array in results
-type id | get a content type, save type in result
-repos | get all repositories, save array in results
-repo [repo id or name] | select a repository, save repository in result
-folders | get all folders in the current repo or folder, save array in results
-folder, cd ['' \| folder id \| name \| '..'] | select a folder, reset folder is no parameter or go up to the parent folder using '..', save folder in result
-ls | do both list folders and list content items in the current repo or folder, only save items in results
-items | get all content items in the current repo or folder, save arry in results
-item, cat id | get content item by id, save item in result
-extensions | get all extensions, save array in results
-extension name | get extension by name, save extension in result
-webhooks | get all webhooks, save array in results
-webhook id | get webhook by id, save webhook in result
-exit, quit, bye | exit
+| `connect, conn clientId clientSecret [hubId]` | connects to an Amplience Dynamic Content instance |
+`context` | show current context
+`client` | show client details
+`env envName` | switch environment, configuration file in `.env.<envName>`, default is in `.env`
+`variables` | show all variables
+`setvar, var, set varName [varValue]` | set a variable or remove it if no value is specified
+`eval` | evaluate a javascript expression, you can access objects like client, context, result, results
+`hubs` | list all hubs, save array in results
+`hub [hub id, name or label]` | select a hub, save hub in result
+`settings` | show hub settings, save settings in result
+`schemas` | get all schemas, save array in results
+`schema schemaId` | get a schema, save schema in result
+`types` | get all content types, save array in results
+`type id` | get a content type, save type in result
+`repos` | get all repositories, save array in results
+`repo [repo id or name]` | select a repository, save repository in result
+`folders` | get all folders in the current repo or folder, save array in results
+`folder, cd ['' \| folder id \| name \| '..']` | select a folder, reset folder is no parameter or go up to the parent folder using `'..'`, save folder in result
+`ls` | do both list folders and list content items in the current repo or folder, only save items in results
+`items` | get all content items in the current repo or folder, save arry in results
+`item, cat id` | get content item by id, save item in result
+`extensions` | get all extensions, save array in results
+`extension name` | get extension by name, save extension in result
+`webhooks` | get all webhooks, save array in results
+`webhook id` | get webhook by id, save webhook in result
+`exit, quit, bye` | exit
 
 ### Videos
 
