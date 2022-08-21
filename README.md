@@ -20,6 +20,8 @@ Environemnt configuration is done in a local .env file (ignored by git):
 CLIENT_ID=xxx
 CLIENT_SECRET=yyy
 HUB_ID=yyy (optional)
+REPO_ID=zzz (optional)
+FOLDER_ID=aaa (optional)
 ```
 
 ### Working with multiple environments

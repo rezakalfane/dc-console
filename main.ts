@@ -112,6 +112,7 @@ let context: any = {
     clientSecret: process.env.CLIENT_SECRET,
     hubId: process.env.HUB_ID,
     repoId: process.env.REPO_ID,
+    folderId: process.env.FOLDER_ID,
     variables: {}
 }
 
@@ -622,6 +623,9 @@ const runConsole = async () => {
     await(connect([context.clientId,context.clientSecret,context.hubId]))
     if (context.repoId) { 
         await getRepository([context.repoId])
+    }
+    if (context.folderId) { 
+        await getFolder([context.folderId])
     }
     while (!quit) {
 
