@@ -10,13 +10,21 @@ You can select a hub, repo and go into folders and list content items.
 
 It's also possible to show hub settings, list extensions, webhooks, schemas, types as well.
 
-## .env file format
+## Environment setup
+
+### .env file format
+
+Environemnt configuration is done in a local .env file (ignored by git):
 
 ```
 CLIENT_ID=xxx
 CLIENT_SECRET=yyy
 HUB_ID=yyy (optional)
 ```
+
+### Working with multiple environments
+
+You can create multiple .env.<environment name> files locally (ignored by git), and switch using the `env <environment name>` command.
 
 ## Supported commands
 
