@@ -247,10 +247,10 @@ const getSchemas: Command = async () => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
         const schemas: ContentTypeSchema[] = await paginator(currentHub.related.contentTypeSchema.list)
-        schemas
-            .filter((item: ContentTypeSchema) => item.status == Status.ACTIVE)
+        const schemasFilter = schemas.filter((item: ContentTypeSchema) => item.status == Status.ACTIVE)
+        schemasFilter
             .forEach((item: ContentTypeSchema) => { console.log(`${FgCyan}${item.schemaId}${Reset}`) })
-        results = schemas
+        results = schemasFilter
     }
 }
 
@@ -266,7 +266,7 @@ const getSchema: Command = async (args: string[]) => {
         const filterSchemas: ContentTypeSchema[] = schemas.filter((item: ContentTypeSchema) => item.schemaId == args[0])
         if (filterSchemas.length>0) {
             const schema = filterSchemas[0]
-            result = schema
+            result = filterSchemas
             const itemAny: any = schema
             delete itemAny._links
             delete itemAny.related
@@ -283,10 +283,10 @@ const getTypes: Command = async () => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
         const types: ContentType[] = await paginator(currentHub.related.contentTypes.list)
-        types
-            .filter((item: ContentType) => item.status == Status.ACTIVE)
+        const typesFilter = types.filter((item: ContentType) => item.status == Status.ACTIVE)
+        typesFilter
             .forEach((item: ContentType) => { console.log(`${FgBlue}${item.settings?.label}${Reset} : ${FgCyan}${item.contentTypeUri}${Reset} : ${Dim}${item.id}${Reset}`) })
-        results = types
+        results = typesFilter
     }
 }
 
@@ -311,12 +311,12 @@ const getRepositories: Command = async () => {
     if (context.hub) {
         const currentHub: Hub = context.hub 
         const repos: ContentRepository[] = await paginator(currentHub.related.contentRepositories.list)
-        repos
-            .filter((item: ContentRepository) => item.status == Status.ACTIVE)
+        const reposFilter = repos.filter((item: ContentRepository) => item.status == Status.ACTIVE)
+        reposFilter
             .forEach((item: ContentRepository) => {
-            console.log(`${FgRed}${item.label}${Reset} : ${FgRed}${item.name}${Reset} : ${Dim}${item.id}${Reset}`)
-        })
-        results = repos
+                console.log(`${FgRed}${item.label}${Reset} : ${FgRed}${item.name}${Reset} : ${Dim}${item.id}${Reset}`)
+            })
+        results = reposFilter
     }
 }
 
@@ -364,8 +364,8 @@ const getFolders: Command = async () => {
         }
         folders
             .forEach((item: Folder) => {
-            console.log(`${FgYellow}${item.name}${Reset} : ${Dim}${item.id}${Reset}`)
-        })
+                console.log(`${FgYellow}${item.name}${Reset} : ${Dim}${item.id}${Reset}`)
+            })
         results = folders
     }
 }
@@ -422,18 +422,18 @@ const getItems: Command = async () => {
     if (context.folder) {
         const currentFolder: Folder = context.folder
         const items = await paginator(currentFolder.related.contentItems.list)
-        items
-            .filter((item: ContentItem) => item.status == Status.ACTIVE)
-            .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
-        results = items
+        const itemsFilter = items.filter((item: ContentItem) => item.status == Status.ACTIVE)
+        itemsFilter
+            .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${item.status} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
+        results = itemsFilter
     } else {
         if (context.repo) {
             const currentRepo: ContentRepository = context.repo
             const items: ContentItem[] = await paginator(currentRepo.related.contentItems.list) 
-            items
-                .filter((item: ContentItem) => item.status == Status.ACTIVE)
+            const itemsFilter = items.filter((item: ContentItem) => item.status == Status.ACTIVE)
+            itemsFilter
                 .forEach((item: ContentItem) => { console.log(`${FgMagenta}${item.label}${Reset} : ${Dim}${item.id}${Reset}${item.body._meta?.deliveryKey ? ' : ' + item.body._meta?.deliveryKey : ''}`) })
-            results = items
+            results = itemsFilter
         }
     }
 }
