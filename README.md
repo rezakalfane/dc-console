@@ -10,6 +10,14 @@ You can select a hub, repo and go into folders and list content items.
 
 It's also possible to show hub settings, list extensions, webhooks, schemas, types as well.
 
+## .env file format
+
+```
+CLIENT_ID=xxx
+CLIENT_SECRET=yyy
+HUB_ID=yyy (optional)
+```
+
 ## Supported commands
 
 ```
