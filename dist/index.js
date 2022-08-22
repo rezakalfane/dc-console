@@ -106,7 +106,7 @@ const prepareTokens = (tokens) => {
  * @returns
  */
 const paginator = (pagableFn, options = {}) => __awaiter(void 0, void 0, void 0, function* () {
-    const currentPage = yield pagableFn(Object.assign(Object.assign({}, options), { size: 20 }));
+    const currentPage = yield pagableFn(Object.assign(Object.assign({}, options), { size: 200 }));
     if (currentPage.page &&
         currentPage.page.number !== undefined &&
         currentPage.page.totalPages !== undefined &&

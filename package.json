@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
+  "bin": {
+    "dc-console": "./dist/index.js"
+  },
   "scripts": {
     "start:dev": "ts-node ./src/index.ts",
     "start": "npm run build && node dist/index.js",
