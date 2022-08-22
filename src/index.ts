@@ -79,7 +79,7 @@ const paginator = async <T extends HalResource>(
     pagableFn: (options?: Pageable & Sortable) => Promise<Page<T>>,
     options: Pageable & Sortable = {}
 ): Promise<T[]> => {
-    const currentPage = await pagableFn({ ...options, size: 20 })
+    const currentPage = await pagableFn({ ...options, size: 200 })
     if (
         currentPage.page &&
         currentPage.page.number !== undefined &&
