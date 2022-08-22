@@ -620,12 +620,17 @@ const commandsMapping = {
 const runConsole = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Dynamic Content Console v${pjson.version}`);
     // connect to Amplience Dynamic Content instance
-    yield (connect([context.clientId, context.clientSecret, context.hubId]));
-    if (context.repoId) {
-        yield getRepository([context.repoId]);
-    }
-    if (context.folderId) {
-        yield getFolder([context.folderId]);
+    if (context.clientId && context.clientSecret) {
+        yield (connect([context.clientId, context.clientSecret]));
+        if (context.hubId) {
+            yield getHub([context.hubId]);
+        }
+        if (context.repoId) {
+            yield getRepository([context.repoId]);
+        }
+        if (context.folderId) {
+            yield getFolder([context.folderId]);
+        }
     }
     while (!quit) {
         // building prompt

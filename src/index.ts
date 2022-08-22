@@ -620,12 +620,17 @@ const runConsole = async () => {
     console.log(`Dynamic Content Console v${pjson.version}`)
 
     // connect to Amplience Dynamic Content instance
-    await(connect([context.clientId,context.clientSecret,context.hubId]))
-    if (context.repoId) { 
-        await getRepository([context.repoId])
-    }
-    if (context.folderId) { 
-        await getFolder([context.folderId])
+    if (context.clientId && context.clientSecret) { 
+        await(connect([context.clientId,context.clientSecret]))
+        if (context.hubId) { 
+            await getHub([context.hubId])
+        }
+        if (context.repoId) { 
+            await getRepository([context.repoId])
+        }
+        if (context.folderId) { 
+            await getFolder([context.folderId])
+        }
     }
     while (!quit) {
 
