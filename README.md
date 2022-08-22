@@ -10,6 +10,33 @@ You can select a hub, repo and go into folders and list content items.
 
 It's also possible to show hub settings, list extensions, webhooks, schemas, types as well.
 
+## Building and starting the console
+
+First you'll need to install the application:
+
+```
+npm install
+```
+
+You can start the console in development mode (using `ts-node`):
+
+```
+npm run start:dev
+```
+
+You can build and start the console in production mode (compiled in `./dist` folder):
+
+```
+npm run start
+```
+
+You can build and clean the application (`./dist` folder):
+
+```
+npm run build
+npm run clean
+```
+
 ## Environment setup
 
 ### .env file format

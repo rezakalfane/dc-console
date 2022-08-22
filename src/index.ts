@@ -1,6 +1,6 @@
 import { DynamicContent, Folder, Hub, ContentItem, Extension, FacetQuery, Status, ContentRepository, ContentTypeSchema, ContentType, HalResource, Page, Pageable, Settings, Sortable, Webhook } from 'dc-management-sdk-js'
 import * as dotenv from 'dotenv';
-var pjson = require('./package.json');
+var pjson = require('../package.json');
 const prompt = require('prompt-sync')({ sigint: true })
 
 // Load config from .env file
