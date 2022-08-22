@@ -5,9 +5,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "start:dev": "ts-node ./src/index.ts",
-    "start": "npm run build && node build/index.js",
-    "build": "rimraf ./build && tsc",
-    "clean": "rimraf ./build",
+    "start": "npm run build && node dist/index.js",
+    "build": "rimraf ./dist && tsc",
+    "clean": "rimraf ./dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
